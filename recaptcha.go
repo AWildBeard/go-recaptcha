@@ -62,7 +62,7 @@ func check(remoteip, response string) (recaptchaResponse, error) {
 	return r, nil
 }
 
-// Confirm is the public interface function that validates the reCAPTCHA token.
+// Confirm is the public interface function that validates a V2 reCAPTCHA token.
 // It accepts the client ip address and the token returned to the client after completing the challenge.
 // It returns a boolean value indicating whether or not the client token is authentic, meaning the challenge
 // was answered correctly.
@@ -72,6 +72,15 @@ func Confirm(remoteip, response string) (bool, error) {
 		return false, err
 	}
 	return resp.Success, convertErrorCodes(resp.ErrorCodes)
+}
+
+// ConfirmV3 will return the authenticity, score, and action of a V3 captcha.
+func ConfirmV3(remoteip, response string) (success bool, score float64, action string, err error){
+	resp, err := check(remoteip, response)
+	if err != nil {
+		return false, 0.0, "", err
+	}
+	return resp.Success, resp.Score, resp.Action, convertErrorCodes(resp.ErrorCodes)
 }
 
 // turn any error codes into actual language describing the problem.
