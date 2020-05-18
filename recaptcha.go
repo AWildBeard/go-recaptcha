@@ -28,8 +28,8 @@ const recaptchaServerName = "https://www.google.com/recaptcha/api/siteverify"
 
 var recaptchaPrivateKey string
 
-// check will construct the request to the verification API, send it, and return the result.
-func check(remoteip, response string) (RecaptchaResponse, error) {
+// Check will construct the request to the verification API, send it, and return the result.
+func Check(remoteip, response string) (RecaptchaResponse, error) {
 	var r RecaptchaResponse
 	resp, err := http.PostForm(recaptchaServerName,
 		url.Values{"secret": {recaptchaPrivateKey}, "remoteip": {remoteip}, "response": {response}})
@@ -53,7 +53,7 @@ func check(remoteip, response string) (RecaptchaResponse, error) {
 // It returns a boolean value indicating whether or not the client token is authentic, meaning the challenge
 // was answered correctly.
 func Confirm(remoteip, response string) (result bool, err error) {
-	resp, err := check(remoteip, response)
+	resp, err := Check(remoteip, response)
 	result = resp.Success
 	return
 }
