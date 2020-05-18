@@ -1,4 +1,4 @@
-module github.com/dpapathanasiou/go-recaptcha
+module github.com/AWildBeard/go-recaptcha
 
 go 1.13
 
